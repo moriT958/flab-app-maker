@@ -1,94 +1,60 @@
 <!doctype html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gherkin Editor - BDD App Maker</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>BDD Feature Editor v2</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>Gherkin Feature Editor</h1>
-        <p>BDD仕様を作成する</p>
-      </header>
+    <div class="app" role="application" aria-label="BDD Feature Editor">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" aria-label="Features list">
+        <h2>Features</h2>
 
-      <main>
-        <div class="feature-card">
-          <!-- Feature Settings -->
-          <section class="feature-settings">
-            <h2>🧩 Feature 設定</h2>
-            <div class="form-group">
-              <label for="feature-name">Feature名:</label>
-              <input
-                type="text"
-                id="feature-name"
-                placeholder="例: ユーザーログイン機能"
-              />
-            </div>
-            <div class="form-group">
-              <label for="feature-description">Description:</label>
-              <textarea
-                id="feature-description"
-                rows="3"
-                placeholder="機能の説明を入力してください"
-              ></textarea>
-            </div>
-          </section>
-
-          <!-- Background Section -->
-          <section class="background-section">
-            <h3>- Background -</h3>
-            <button class="btn-add-step" id="add-background-step">
-              + Add Step
-            </button>
-            <div id="background-steps" class="steps-container"></div>
-          </section>
-
-          <!-- Scenarios Section -->
-          <section class="scenarios-section">
-            <h3>- Scenarios -</h3>
-            <button class="btn-add-scenario" id="add-scenario">
-              ⊕ Add Scenario
-            </button>
-            <div id="scenarios-container"></div>
-          </section>
-
-          <!-- Actions -->
-          <section class="actions">
-            <button class="btn btn-primary" id="generate-gherkin">
-              📝 Gherkinを生成
-            </button>
-            <button class="btn btn-secondary" id="save-draft">
-              💾 下書き保存
-            </button>
-            <button class="btn btn-success" id="download-gherkin">
-              ⬇️ ダウンロード
-            </button>
-          </section>
+        <div class="feature-list" role="list" id="featureList">
+          <!-- Features will be dynamically rendered here -->
         </div>
 
-        <!-- Preview Section -->
-        <div class="preview-section">
-          <h3>📄 Gherkin Preview</h3>
-          <pre id="gherkin-preview"></pre>
+        <div class="feature-controls">
+          <button class="btn btn-add" id="addFeatureBtn">＋ Add Feature</button>
+          <button class="btn btn-manage" id="manageBtn">⚙︎ Manage</button>
+        </div>
+      </aside>
+
+      <!-- EDITOR -->
+      <main class="editor" aria-label="Feature editor" id="editor">
+        <div id="editorContent">
+          <!-- Editor content will be dynamically rendered here -->
         </div>
       </main>
     </div>
 
-    <!-- Modal for Step Type Selection -->
-    <div id="step-modal" class="modal">
-      <div class="modal-content">
-        <h3>ステップタイプを選択</h3>
-        <div class="step-type-buttons">
-          <button class="btn-step-type" data-type="Given">Given</button>
-          <button class="btn-step-type" data-type="When">When</button>
-          <button class="btn-step-type" data-type="Then">Then</button>
-          <button class="btn-step-type" data-type="And">And</button>
+    <!-- Modal Dialog -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 id="modalTitle">Modal Title</h3>
+          <button class="modal-close" id="modalClose">×</button>
         </div>
-        <button class="btn-cancel" id="cancel-modal">キャンセル</button>
+        <div class="modal-body">
+          <p id="modalMessage">Modal message goes here</p>
+          <input
+            type="text"
+            id="modalInput"
+            class="modal-input"
+            style="display: none"
+          />
+        </div>
+        <div class="modal-footer">
+          <button class="secondary" id="modalCancel">キャンセル</button>
+          <button class="primary" id="modalConfirm">OK</button>
+        </div>
       </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script src="app.js"></script>
   </body>
