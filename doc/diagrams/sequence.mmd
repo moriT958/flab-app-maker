@@ -1,0 +1,36 @@
+sequenceDiagram
+    autonumber
+
+    actor User
+    participant UI as コントロール画面<br>(React UI)
+    participant API as APIサーバ<br>(App Gen System)
+    participant SpecQ as 仕様生成キュー
+    participant AI as 生成AI<br>(Bedrock)
+    participant DB as DB
+    participant AppQ as アプリ生成キュー
+
+    %% 仕様生成ステップ
+    User ->> UI: プロンプト入力
+    UI ->> API: 仕様生成依頼
+    API ->> SpecQ: 仕様生成タスクをエンキュー
+
+    SpecQ ->> AI: Gherkin仕様生成 & テストコード生成
+    AI -->> SpecQ: 生成結果
+
+    SpecQ ->> API: 生成完了通知
+    API ->> DB: 仕様(Gherkin + Test)保存
+    API ->> UI: 仕様表示
+
+    %% 仕様レビュー / 確定
+    User ->> UI: 仕様修正
+    User ->> UI: 仕様確定
+    UI ->> API: 仕様確定通知
+
+    %% アプリ生成ステップ
+    API ->> AppQ: アプリ生成タスクをエンキュー
+    AppQ ->> AI: コード生成・修復\n（テストをパスするまでループ）
+    AI -->> AppQ: 生成完了
+
+    AppQ ->> API: 結果通知
+    API ->> DB: 生成物保存
+    API ->> UI: アプリプレビュー表示
